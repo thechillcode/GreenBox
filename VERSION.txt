@@ -1,0 +1,17 @@
+Author: Michael Lutz (mvlutz@gmx.net)
+
+Changelog:
+
+Version 1.0 - 2020-08-29 (Using Load Cells)
+	- init
+	
+Version 2 - 2020-10-26
+	- Growbox uses python3 (Update schedules "sudo crontab -e" manually or do a complete reinstall)
+	- Internally using UTC Date
+	- Sensor charts show Diff when clicking on a point
+	- Removed .php from url's via rewrite rule
+	- Option to schedule watering once
+
+Version 3 -
+	- Added Offset Setting to AirSensor
+	- HTML Dark Theme

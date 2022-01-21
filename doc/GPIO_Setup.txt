@@ -1,0 +1,58 @@
+*******************************************************
+GPIO SETUP
+*******************************************************
+3.3V MAX CURRENT = 50mA
+5V MAX CURRENT (Outlet - Raspi Usage)
+	Raspi Bensh: 400% CPU load, 1x USB 64GB SSD; 1250 mA (~6.25 W)0
+
+
+8CH Relay, Jumper VCC-JDVCC (tested is okey):
+
+	VCC => Pin 04 (DC Power 5V)
+	GND => Pin 05 (Ground)
+
+	IN8 - IN1
+	GPIO: 14, 15, 18, 23, 24, 25, 08, 07
+	GPIO in PI set to Output
+
+
+Hygrometer1 DHT22, AS2302:
+
+	+ => Pin 01 (3.3v DC Power)
+	- => Pin 09 (Ground)
+	out => GPIO 17, used to be 04
+
+Hygrometer2 DHT22, AS2302:
+
+	+ => Pin 01 (3.3v DC Power)
+	- => Pin 09 (Ground)
+	out => GPIO 27
+
+WeightSensor1: (ca. 1.5mA)
+
+	VCC => PIN 17 (3.3v DC Power)
+	GND => PIN 25 (Ground)
+	DT => GPIO 22
+	SCK => GPIO 10
+
+WeightSensor2:
+
+	VCC => PIN 17 (3.3v DC Power)
+	GND => PIN 25 (Ground)
+	DT => GPIO 09
+	SCK => GPIO 11
+
+I2C: 
+	5V
+	GND
+	SCL => SCL1
+	SDA => SDA1
+
+ADC 1115 (A/D) (I2C):
+	5V
+	GND
+
+	Soil Moisture Sensor:
+	5V
+	GND
+		A0

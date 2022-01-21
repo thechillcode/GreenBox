@@ -1,0 +1,10 @@
+.svn-base
+.svn
+*.bat
+_update_database.sql
+doc/Login.txt
+doc/orange-flower32x32.ico
+doc/php_debug.txt
+doc/apache.txt
+doc/Authentication.url
+doc/Devices.txt
