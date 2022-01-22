@@ -8,3 +8,5 @@ doc/php_debug.txt
 doc/apache.txt
 doc/Authentication.url
 doc/Devices.txt
+var.www.growbox/etc.apache2.htpasswd_growbox
+var.www.growbox/etc.apache2.sites-enabled.000-default.conf

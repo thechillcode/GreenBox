@@ -56,19 +56,19 @@ Perform reboot
 
 
 ******************************************************
-* 1. Copy files (e.g. into /home/pi/Install/Growbox) *
+* 1. Copy files (e.g. into /home/pi/GreenBox) *
 ******************************************************
 
-rm -r Growbox
-git clone https://github.com/thechillcode/Growbox.git & cd Growbox
+rm -r GreenBox
+git clone https://github.com/thechillcode/GreenBox.git & cd GreenBox
 
 
 *********************************************
 * 2. Execute (from installation directory): *
 *********************************************
 
-sudo ./install_software.sh
-sudo ./install_files.sh
+sudo ./INSTALL_SOFTWARE.sh
+sudo ./INSTALL_FILES.sh
 
 
 ********************

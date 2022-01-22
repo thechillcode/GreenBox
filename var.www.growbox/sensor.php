@@ -95,8 +95,8 @@ switch ($sensor) {
 		break;
 		
 	case "weight":
-		$color1 = '#6E8EAD';
-		$color2 = '#a6a6a6';
+		$color1 = '#a6a6a6';
+		$color2 = '#6E8EAD';
 		$name = $db->querySingle('SELECT name FROM WeightSensors WHERE rowid='. $id);
 		$nav = array(
 			array("Home", "growbox"),
