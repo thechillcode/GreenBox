@@ -30,6 +30,14 @@ Perform reboot
 ------------
 
 ------------
+Enable Camera
+open:
+	sudo raspi-config
+Scroll to interfaces and enable I2C
+Perform reboot
+------------
+
+------------
 /boot/config.txt
 
 Disable Audio

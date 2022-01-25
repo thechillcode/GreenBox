@@ -34,6 +34,9 @@ sudo pip3 install RPI.GPIO
 
 sudo apt-get install python3-picamera -y
 
+sudo apt-get install i2c-tools python3-pip -y
+sudo apt-get install python3-smbus -y
+
 # Adafruit Library, DHT22
 
 # Adafruit DEPRECATED Library, DHT22

@@ -11,6 +11,9 @@ import config
 
 import growbox
 
+import bme280
+
+
 import os
 
 import signal
@@ -138,7 +141,11 @@ for v in air_sensors:
 		h_offset = v[4]
 		t_offset = v[5]
 		if (enabled == 1):
-			humidity, temperature = growbox.airsensor_read(config.AirSensorType, gpio, h_offset, t_offset)
+			if (gpio > 32):
+				temperature, humidity = bme280.readBME280(gpio)
+			else:
+				humidity, temperature = growbox.airsensor_read(config.AirSensorType, gpio, h_offset, t_offset)
+			
 			if humidity is None:
 				humidity, temperature = 0.0, 0.0
 			growbox_db.insert_airsensordata(dt, id, temperature, humidity)
