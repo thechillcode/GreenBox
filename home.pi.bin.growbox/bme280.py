@@ -40,13 +40,13 @@ def readBME280(addr=DEFAULT_ADDR):
 		num = num & 0xFFFF
 		if ((0x8000 & num) == 0):
 			return num
-		return (num - 0xFFFF)
+		return (num - 0x10000)
 		
 	def to_char(num):
 		num = num & 0xFF
 		if ((0x80 & num) == 0):
 			return num
-		return (num - 0xFF)
+		return (num - 0x100)
 
 	# Read blocks of calibration data from EEPROM
 	# See Tabel 16, read minimum calls

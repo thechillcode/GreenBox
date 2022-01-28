@@ -30,7 +30,7 @@ Perform reboot
 ------------
 
 ------------
-Enable Camera
+Enable I2C
 open:
 	sudo raspi-config
 Scroll to interfaces and enable I2C
