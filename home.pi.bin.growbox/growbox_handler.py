@@ -7,13 +7,7 @@
 # Growbox uses UTC Time, to avoid Winter Summer Time Switch
 ################################################
 
-import config
-
-import growbox
-
-import bme280
-
-
+# Import Libraries
 import os
 
 import signal
@@ -29,6 +23,14 @@ from shutil import copyfile
 from threading import Thread
 
 from crontab import CronTab
+
+# Import Growbox Libraries
+import config
+
+import growbox
+
+import bme280
+
 
 # Define exeint, execute intervall in minutes !!!! Important for Vent and Fan !!!!
 exeint = config.ExeInt
@@ -330,7 +332,8 @@ for socket in sockets:
 		################################################
 		# Pump Handle
 		# Pump 200ml with 30m pause, should have a positive effect on how the earth absorbes the water
-		# Note: Watering using the scale does not work when your pump's flowrate is high => don't do it, use the flowrate
+		# Note: Using the scale to calc the amount of water does not work with a stron pump
+		#	therefore sticking to flowrate is more universal
 		################################################
 		ml = socket['MilliLiters']
 		fr = socket['FlowRate']
@@ -359,7 +362,7 @@ for socket in sockets:
 				socket['DaysCnt'] -= 1
 				growbox_db.set_socket(rowid, "DaysCnt", socket["DaysCnt"])
 			
-			if (ispumping == 0):
+			if ((ispumping == 0) and (fr > 0)):
 				# is it time to water?
 				if (now.hour == socket["Time"]) and (now.minute == 0):
 					# using load cell
@@ -406,8 +409,22 @@ for socket in sockets:
 				
 			# water plants every 0 and 10,20,30 of the hour (config.PumpPause)
 			if (ispumping == 1) and (fr > 0) and (((now.minute % config.PumpPause) == 0) or (water_manual == 1)):
-			
-				water_plants.append([ rowid, gpio, topump, pumped, fr, water_manual, name ])
+			#if (ispumping == 1) and (fr > 0) and (((now.minute % 10) == 0) or (water_manual == 1)):
+				# Calculate amount to pump
+				pump_now = config.PumpInc
+				# Not using weight
+				if (topump != -1):
+					remaining = topump-pumped
+					if remaining < pump_now:
+						pump_now = remaining
+				# Using weight
+				else:
+					remaining = maxw - weight
+					if (remaining < pump_now):
+						# calc with ~ +50ml
+						pump_now = (int(remaining / 50) + 1) * 50
+
+				water_plants.append([rowid, gpio, name, fr, topump, pumped, pump_now])
 				sockets_load[rowid] = load
 						
 	
@@ -431,16 +448,8 @@ growbox_db.insert_power(dt, sockets_load[1],sockets_load[2],sockets_load[3],sock
 # Pump [config.PumpInc]ml with [config.PumpPause]s pause, should have a positive effect on how the earth absorbes the water
 # Pumping is threaded so all pumps can start at the same time
 ################################################
-def water_plant(socketid, gpio, topump, pumped, fr, water_manual):
+def water_plant(socketid, gpio, fr, topump, pumped, pump_now):
 
-	pump_now = config.PumpInc
-	if (topump != -1):
-		remaining = topump-pumped
-		if (water_manual == 1):
-			pump_now = topump
-		elif remaining < pump_now:
-			pump_now = remaining
-		
 	slp = int(pump_now/fr) + 1 # add one second for pump to start till water comes from the tubes
 
 	growbox.relay_set(gpio, 1)
@@ -466,13 +475,12 @@ if (growbox_db.get_main() == 1):
 	for row in water_plants:
 		rowid = row[0]
 		gpio = row[1]
-		ml = row[2]
-		towater = row[3]
-		fr = row[4]
-		water_manual = row[5]
-		name = row[6]
-
-		thread = Thread(target = water_plant, args = (rowid, gpio, ml, towater, fr, water_manual))
+		name = row[2]
+		fr = row[3]
+		topump = row[4]
+		pumped = row[5]
+		pump_now = row[6]
+		thread = Thread(target = water_plant, args = (rowid, gpio, fr, topump, pumped, pump_now))
 		thread.start()
 		
 ################################################

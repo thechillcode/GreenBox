@@ -231,9 +231,15 @@ if (isset($_REQUEST['socket']))
 		$lower_h = 0;
 		$higher_h = 0;
 		
-		$flowrate = isset($_REQUEST['flow']) ? in_range(floatval($_REQUEST['flow']), 0, 1000, 0) : 0;
-		$wsensorid = isset($_REQUEST['wsensorid']) ? in_range(floatval($_REQUEST['wsensorid']), 1, $weight_sensors_num, 0) : 0;
-	
+		$flowrate = "";
+		if (isset($_REQUEST['flow'])) {
+			$flowrate = "FlowRate=". (in_range(floatval($_REQUEST['flow']), 0, 1000, 0)) .",";
+		}
+		$wsensorid = "";
+		if (isset($_REQUEST['wsensorid'])) {
+			$wsensorid = "WSensorID=". (in_range(floatval($_REQUEST['wsensorid']), 1, $weight_sensors_num, 0)) .",";
+		}
+			
 		$query = $db->exec("UPDATE Sockets SET Active=" . $active . ",
 			Name='". $name . "',
 			Load=". $load .",
@@ -244,8 +250,8 @@ if (isset($_REQUEST['socket']))
 			Temperature=". $temperature .",
 			Humidity=". $humidity .",
 			Pump=". $pump .",
-			FlowRate=". $flowrate .",
-			WSensorID=". $wsensorid ."
+			". $flowrate . $wsensorid ."
+			IsPumping=0
 			WHERE rowid=". $socket_id);
 	}
 }
